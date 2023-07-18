@@ -1,11 +1,12 @@
 {% extends 'admin/base.html' %}
 {% load i18n static suit_tags %}
 
-{% block stylesheet %}{% static "suit/css/suit.css" %}{% endblock %}
+{% block stylesheet %}{% if debug %}{% static "suit/css/suit.css" %}{% else %}{% static "suit/css/suit.min.css" %}{% endif %}{% endblock %}
 
 {% block extrastyle %}
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900' rel='stylesheet' type='text/css'>
     <link href='{% static "suit/css/font-awesome.min.css" %}' rel='stylesheet' type='text/css'>
+    <link href='{% static "vendor/css/bootstrap-utilities.min.css" %}' rel='stylesheet' type='text/css'>
 {% endblock %}
 
 {% block bodyclass %}{{ block.super|suit_body_class:request }}{% endblock %}
@@ -27,9 +28,7 @@
     <div class="messagelist">
         {% for message in messages %}
             <div class="alert alert-{% firstof message.tags 'info' %} alert-dismissible fade show" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 {% if 'safe' in message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}
             </div>
         {% endfor %}
@@ -150,6 +149,7 @@
 {#            {% endif %}#}
         </script>
     {% endif %}
+    <script src="{% static "vendor/js/bootstrap.bundle.min.js" %}"></script>
 
 {#    <div> <!-- Fix/close div previously closed by footer -->#}
 {% endblock %}
